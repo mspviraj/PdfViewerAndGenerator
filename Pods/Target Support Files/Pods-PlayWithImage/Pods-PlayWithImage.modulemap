@@ -1,0 +1,6 @@
+framework module Pods_PlayWithImage {
+  umbrella header "Pods-PlayWithImage-umbrella.h"
+
+  export *
+  module * { export * }
+}
