@@ -10,19 +10,19 @@ import UIKit
 
 class SecondViewController: UIViewController {
 
+    //MARK:-  Variables
     var image: UIImage?
+    
+    //MARK:-  Outlets
     @IBOutlet weak var imgView: UIImageView!
+    
+    //MARK:- viewDidLoad()
     override func viewDidLoad() {
         super.viewDidLoad()
         imgView.image = image
-        // Do any additional setup after loading the view.
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
- 
+    //MARK:-  btnBack
     @IBAction func btnBack(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }

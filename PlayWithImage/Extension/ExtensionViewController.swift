@@ -9,9 +9,10 @@
 import Foundation
 import UIKit
 
-//MARK: extension
+//MARK:- extension
 extension ViewController: UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout
 {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return imageArr.count
     }
@@ -23,26 +24,31 @@ extension ViewController: UICollectionViewDelegate,UICollectionViewDataSource,UI
                 return MyCollectionViewCell()
         }
         let tap = UITapGestureRecognizer()
-        tap.addTarget(self, action: Selector("performSegue"))
+        tap.addTarget(self, action: #selector(self.performSegue(_ :)))
         cell.imgView.isUserInteractionEnabled = true
         cell.imgView.addGestureRecognizer(tap)
         cell.imgView.image = imageArr[indexPath.row]
         cell.imgView.transform = .identity
+        cell.mainVCobj = self
         return cell
     }
    
-    func performSegue()
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
+    }
+    
+    //MARK:- performSegue
+    func performSegue(_ sender: UITapGestureRecognizer)
     {
-        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SecondViewController") as? SecondViewController
+        let vc = UIStoryboard(name: OtherUtility.Main.rawValue, bundle: nil).instantiateViewController(withIdentifier: VCIdentifier.SecondViewController.rawValue) as? SecondViewController
         let cell = collectionView.visibleCells.first as? MyCollectionViewCell
         let indexPath = collectionView.indexPath(for: cell!)
         vc?.image = imageArr[(indexPath?.row)!]
         self.present(vc!, animated: true, completion: nil)
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
-    }
+    
+    
 }
 
 

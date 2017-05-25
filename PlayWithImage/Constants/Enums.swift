@@ -6,16 +6,29 @@
 //  Copyright © 2017 code.brew. All rights reserved.
 //
 
-import Foundation
 
 enum CollectionViewIdentifier : String
 {
     case cellIdentifier = "cell"
 }
 
-enum PdfMessage : String
+enum Pdf : String
 {
-    case success = "PDF Generate Successfully !!!"
+    case Title = "Success"
+    case success = "PDF Generate Successfully"
     case location = "location: "
-    case fileName = "sample1.pdf"
+    case fileName = "myPDFImage.pdf"
+    case folderName = "mypdf"
+}
+
+enum VCIdentifier : String
+{
+        case PdfReaderViewController = "PdfReaderViewController"
+        case SecondViewController = "SecondViewController"
+}
+enum OtherUtility : String
+{
+    case Main = "Main"
+    case error = "error"
+    case blank = ""
 }

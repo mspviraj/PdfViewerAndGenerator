@@ -2,4 +2,102 @@
 <Bucket
    type = "0"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Pods/PDFGenerator/PDFGenerator/PDFPage.swift"
+            timestampString = "517400792.022091"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "76"
+            endingLineNumber = "76"
+            landmarkName = "PDFPageSize"
+            landmarkType = "14">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PDFGenerator.PDFPageSize.A4.unsafeMutableAddressor : __C.CGSize"
+                  moduleName = "PDFGenerator"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sierra4/Desktop/projects/PlayWithImage/Pods/PDFGenerator/PDFGenerator/PDFPage.swift"
+                  timestampString = "517412491.932972"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "76"
+                  endingLineNumber = "76"
+                  offsetFromSymbolStart = "4">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static PDFGenerator.PDFPageSize.A4.getter : __C.CGSize"
+                  moduleName = "PDFGenerator"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sierra4/Desktop/projects/PlayWithImage/Pods/PDFGenerator/PDFGenerator/PDFPage.swift"
+                  timestampString = "517412491.935094"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "76"
+                  endingLineNumber = "76"
+                  offsetFromSymbolStart = "18">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Pods/PDFGenerator/PDFGenerator/PDFPage.swift"
+            timestampString = "517400792.766109"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "78"
+            endingLineNumber = "78"
+            landmarkName = "PDFPageSize"
+            landmarkType = "14">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "globalinit_33_93334E929BA6A64ACE4DF7EA25E87151_func1"
+                  moduleName = "PDFGenerator"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sierra4/Desktop/projects/PlayWithImage/Pods/PDFGenerator/PDFGenerator/PDFPage.swift"
+                  timestampString = "517412491.939998"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "78"
+                  endingLineNumber = "78"
+                  offsetFromSymbolStart = "20">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static PDFGenerator.PDFPageSize.B5.getter : __C.CGSize"
+                  moduleName = "PDFGenerator"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sierra4/Desktop/projects/PlayWithImage/Pods/PDFGenerator/PDFGenerator/PDFPage.swift"
+                  timestampString = "517412491.944384"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "78"
+                  endingLineNumber = "78"
+                  offsetFromSymbolStart = "18">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

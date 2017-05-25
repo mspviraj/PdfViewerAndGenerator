@@ -8,145 +8,111 @@
 
 import UIKit
 import PDFGenerator
+import AVFoundation
 
 class MyCollectionViewCell: UICollectionViewCell {
     
-    //MARK: Variables
+    //MARK:- Variables
     let resourcesObj = Resources()
     var imagesArr = [UIImage]()
     var transfromArr = [UIImage]()
+    var documentObj = Document()
+    var mainVCobj = ViewController()
     
     
-    //MARK: Outlets
+    //MARK:- Outlets
     @IBOutlet weak var imgView: UIImageView!
     
-    //MARK: btnSaveToPdfAct()
+    
+    //MARK:- btnSaveToPdfAct()
     @IBAction func btnSaveToPdfAct(_ sender: UIButton) {
        
-       imagesArr = resourcesObj.getResources()
-       generatePdf()
+     imagesArr = resourcesObj.getResources()
+      generatePdf()
     }
     
-    //MARK: generatePdf()
+    
+    //MARK:- generatePdf()
     func generatePdf()
     {
         var pagesArr = [PDFPage]()
-        for index in 0..<self.imagesArr.count
+        var index = 0
+        while index < self.imagesArr.count
         {
-        let page = PDFPage.view(createViewWithImageandLabel(index:index))
+            
+         let page = PDFPage.image(self.createViewWithImageandLabel(index:index))
         pagesArr.append(page)
+          
+             index = index + 1
         }
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        var documentsDirectory = paths[0]
-        documentsDirectory.appendPathComponent("sample1.pdf")
+        let documentDirectory = documentObj.getDocumentsDirectory()
+        var newDir = documentDirectory.appendingPathComponent(Pdf.folderName.rawValue).path
+        newDir.append("/\(Pdf.fileName.rawValue)")
+        
         do {
-            try PDFGenerator.generate(pagesArr, to: documentsDirectory)
-            print("location: \(documentsDirectory)")
-            print("PDF Generate Successfully !!!")
+            try PDFGenerator.generate(pagesArr, to: newDir)
+            print(Pdf.location.rawValue ,newDir)
+            mainVCobj.showAlert()
             
         } catch (let e) {
             print(e.localizedDescription)
-        }
+       }
     }
     
-   //MARK: createViewWithImageandLabel
-    func createViewWithImageandLabel(index : Int) -> UIView
+   //MARK:- setImagesInPdfAccordingToTheSize
+    func createViewWithImageandLabel(index : Int) ->UIImage
     {
-        let mainView = UIView(frame: CGRect(x: 0.0,y: 0.0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height))
-        mainView.backgroundColor = .white
+        let visibleRect = AVMakeRect(aspectRatio: CGSize(width: imagesArr[index].size.width, height: imagesArr[index].size.height), insideRect: UIScreen.main.bounds)
         
+        //UIView
+        let mainView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: visibleRect.size.width, height: visibleRect.size.height + 40.0 ))
+        //let mainView = UIView(frame:UIScreen.main.bounds)
+        mainView.backgroundColor = .red
+        
+
         //UIImageView
-        let imageView = UIImageView(frame: CGRect(x: 0.0,y: 0.0, width: 300.0,height: 300.0))
-        imageView.center = mainView.center
+        let imageView = UIImageView(frame: CGRect(x: 0.0, y: 0.0, width: visibleRect.size.width, height: visibleRect.size.height))
         imageView.contentMode = .scaleAspectFit
         imageView.image = self.imagesArr[index]
         
+        
+        //First UIImageView
+        let firstChildImageView = UIImageView(frame:CGRect(x: 0.0, y: imageView.frame.size.height - 80.0, width: 80.0, height: 80.0))
+        firstChildImageView.image = self.imagesArr[index]
+        
+        
+        //Second UIImageView
+        let secondChildImageView = UIImageView(frame:CGRect(x: firstChildImageView.frame.size.width , y: imageView.frame.size.height - 80.0, width: 80.0, height: 80.0))
+        secondChildImageView.image = self.imagesArr[index]
+        
+        
+        
         //UILabel
-        let label = UILabel(frame: CGRect(x: 0.0, y: UIScreen.main.bounds.size.height - 40, width: UIScreen.main.bounds.size.width, height: 40))
+        let label = UILabel(frame: CGRect(x: 0.0, y: imageView.frame.size.height, width: visibleRect.size.width, height: 40))
+        //let label = UILabel(frame: CGRect(x: 0.0, y: UIScreen.main.bounds.size.height - 40.0,width:UIScreen.main.bounds.size.width, height: 40))
+        
         label.textAlignment = .center
         label.text = String("img \(index) .png")
         label.backgroundColor = UIColor.orange
         
-        //addToSubView
         mainView.addSubview(imageView)
         mainView.addSubview(label)
-        return mainView
+        mainView.addSubview(firstChildImageView)
+        mainView.addSubview(secondChildImageView)
+        
+        //convert into image
+        let convertedImage = convertViewIntoImage(view:mainView)
+        return convertedImage
     }
     
-   
-  
+    
+    //MARK:- convertViewIntoImage
+    func convertViewIntoImage(view:UIView) -> UIImage
+    {
+       UIGraphicsBeginImageContextWithOptions(view.frame.size, true, 2.0)
+       view.layer.render(in: UIGraphicsGetCurrentContext()!)
+       let image = UIGraphicsGetImageFromCurrentImageContext()
+       UIGraphicsEndImageContext()
+       return image!
+    }
 }
-
-//func generatePdf()
-//{
-//    var pagesArr = [PDFPage]()
-//    for index in 0..<self.imagesArr.count
-//    {
-//        let page = PDFPage.view(createViewWithImageandLabel(index:index))
-//        pagesArr.append(page)
-//    }
-//    let dst = NSTemporaryDirectory().appending("sample1.pdf")
-//    do {
-//        try PDFGenerator.generate(pagesArr, to: dst)
-//        print("location: \(dst)")
-//        print("PDF Generate Successfully !!!")
-//        
-//    } catch (let e) {
-//        print(e.localizedDescription)
-//    }
-//}
-
-//MARK:- setImagesInPdfAccordingToTheSize
-
-//
-//func createViewWithImageandLabel(index : Int) -> UIView
-//{
-//    UIView
-//    let mainView = UIView(frame: CGRect(x: 0.0,y: 0.0, width: imagesArr[index].size.width, height: imagesArr[index].size.height + 40 ))
-//    mainView.backgroundColor = .white
-//    
-//    UIImageView
-//    let imageView = UIImageView(frame: CGRect(x: 0.0,y: 0.0, width: imagesArr[index].size.width, height:imagesArr[index].size.height))
-//    imageView.contentMode = .scaleAspectFit
-//    imageView.image = self.imagesArr[index]
-//    
-//    UILabel
-//    let label = UILabel(frame: CGRect(x: 0.0, y: imageView.frame.size.height, width: imagesArr[index].size.width, height: 40))
-//    label.textAlignment = .center
-//    label.text = String("img \(index) .png")
-//    label.backgroundColor = UIColor.orange
-
-//    mainView.addSubview(imageView)
-//    mainView.addSubview(label)
-//    return mainView
-//}
-
-
-
-
-
-//MARK :- to store the single Image in PDF
-
-//func saveToPdf(img: UIImageView)
-//{
-//    let pdfData = NSMutableData()
-//    UIGraphicsBeginPDFContextToData(pdfData, imgView.bounds, nil)
-//    UIGraphicsBeginPDFPage()
-//    
-//    let pdfContext = UIGraphicsGetCurrentContext()
-//    
-//    if (pdfContext == nil)
-//    {
-//        return
-//    }
-//    imgView
-//        .layer.render(in: pdfContext!)
-//    UIGraphicsEndPDFContext()
-//    
-//    if let documentDirectories: AnyObject = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first as AnyObject?
-//    {
-//        let documentsFileName = (documentDirectories as! String)  + ("/myPDFImage.pdf")
-//        debugPrint(documentsFileName, terminator: "")
-//        pdfData.write(toFile: documentsFileName, atomically: true)
-//    }
-//}
