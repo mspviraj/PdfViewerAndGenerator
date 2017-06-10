@@ -4,6 +4,31 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Alamofire.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>GTMOAuth2.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>GTMSessionFetcher.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>GoogleAPIClientForREST.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>GoogleToolboxForMac.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>PDFGenerator.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -14,15 +39,50 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>SwiftyDropbox.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>ABC4A148141F3BDCC0F21B7CAF973475</key>
+		<key>04772DECC8BA377E33639BD3DCEBDBB8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>107A9565F9DF88517DFD3E28C05B2B96</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1A8F9D2EEF2FA1A46025C7A64CC238D7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2A1A9CC99D0A075881B2E625E3308DE4</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>88E9EC28B8B46C3631E6B242B50F4442</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B1C4AAFAF49036C7007633DAA3C806AD</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>C987ABC0516F08EB4031980AAE831F95</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E0F7D77396D218B9A370B128FD3A89C0</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -17,6 +17,7 @@ extension ViewController: UICollectionViewDelegate,UICollectionViewDataSource,UI
         return imageArr.count
     }
     
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell{
         
         guard let cell:MyCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionViewIdentifier.cellIdentifier.rawValue, for: indexPath) as? MyCollectionViewCell
@@ -32,7 +33,8 @@ extension ViewController: UICollectionViewDelegate,UICollectionViewDataSource,UI
         cell.mainVCobj = self
         return cell
     }
-   
+    
+    //MARK:-
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
     }
@@ -43,7 +45,7 @@ extension ViewController: UICollectionViewDelegate,UICollectionViewDataSource,UI
         let vc = UIStoryboard(name: OtherUtility.Main.rawValue, bundle: nil).instantiateViewController(withIdentifier: VCIdentifier.SecondViewController.rawValue) as? SecondViewController
         let cell = collectionView.visibleCells.first as? MyCollectionViewCell
         let indexPath = collectionView.indexPath(for: cell!)
-        vc?.image = imageArr[(indexPath?.row)!]
+        vc?.image = cell?.thumbImage
         self.present(vc!, animated: true, completion: nil)
     }
     

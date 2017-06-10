@@ -12,6 +12,7 @@ open class PDFSinglePageViewer: UICollectionView {
     
     open var document: PDFDocument?
     public static var isHorizontal:Bool?
+    public var finalImages:[UIImage]?
     public static var flowLayout: UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
         if isHorizontal == true
@@ -63,9 +64,7 @@ open class PDFSinglePageViewer: UICollectionView {
         register(PDFSinglePageCell.self, forCellWithReuseIdentifier: "ContentCell")
         delegate = self
         dataSource = self
-       
-        }
-    
+    }
     open func indexForPage(_ page: Int) -> Int {
         let currentPage = page - 1
         if currentPage <= 0 {
@@ -90,6 +89,9 @@ open class PDFSinglePageViewer: UICollectionView {
 
 extension PDFSinglePageViewer: UICollectionViewDataSource ,UICollectionViewDelegateFlowLayout{
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
+        
+        
+        
         return 1
     }
     
@@ -101,21 +103,36 @@ extension PDFSinglePageViewer: UICollectionViewDataSource ,UICollectionViewDeleg
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = self.dequeueReusableCell(withReuseIdentifier: "ContentCell", for: indexPath) as! PDFSinglePageCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ContentCell", for: indexPath) as! PDFSinglePageCell
         
         let contentSize = self.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAt: indexPath)
-        let contentFrame = CGRect(origin: CGPoint.zero, size: contentSize)
-        
+        var contentFrame = CGRect()
+//        if (UIDeviceOrientationIsLandscape(UIDevice.current.orientation))
+//        {
+//            //code for portrait
+//            contentFrame = CGRect(origin: CGPoint(x:(collectionView.frame.width * CGFloat(indexPath.row + 1) / 2),y:0) ,size: contentSize)
+//            contentFrame.size = contentSize
+//        }
+//        else{
+            contentFrame = CGRect(origin: CGPoint.zero, size: contentSize)
+   //     }
         let page = indexPath.row + 1
-        
         cell.contentView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-        cell.contentView.backgroundColor = UIColor.gray
+        cell.contentView.backgroundColor = UIColor.darkGray
         cell.pageContentView = PDFPageContentView(frame: contentFrame, document: document!, page: page)
         return cell
     }
-    
-    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
-    }
 
-}
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        // return CGSize(width: self.frame.width, height: self.frame.height)
+        
+//        if (UIDeviceOrientationIsLandscape(UIDevice.current.orientation))
+//        {
+//        return CGSize(width:finalImages![indexPath.row].size.width,height:finalImages![indexPath.row].size.height)
+//            
+//        }
+//        else{
+            return CGSize(width: self.frame.width , height: self.frame.height)
+//        }
+        }
+ }

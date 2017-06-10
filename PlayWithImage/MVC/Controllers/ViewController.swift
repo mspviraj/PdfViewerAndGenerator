@@ -7,76 +7,175 @@
 //
 
 import UIKit
+import SwiftyDropbox
 
 class ViewController: UIViewController {
     
-    //MARK: Variables
+    //MARK:- Variables
     let resourceObj = Resources()
     var imageArr = [UIImage]()
+    var rotationObj = Rotation()
+    var documentObj = Document()
+    let fileManager = FileManager.default
+    let arrDropboxImages = NSMutableArray()
+    var finalImage = [UIImage]()
     
-    //MARK: Outlets
+    
+    //MARK:- Outlets
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var btnUploadToDbox: UIButton!
+    @IBOutlet weak var btnGetDropboxImages: UIButton!
     
-    //MARK: viewDidLoad()
+    
+    //MARK:- viewDidLoad()
     override func viewDidLoad() {
         super.viewDidLoad()
         imageArr = resourceObj.getResources()
-       
-     }
+        btnUploadToDbox.isHidden = true
+        btnGetDropboxImages.isHidden = true
+    }
     
+    
+    //MARk:- viewDidAppear()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AppUtility.lockOrientation(.portrait)
+    }
+    
+    
+    //MARK:- viewWillDisappear()
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        AppUtility.lockOrientation(.all)
+    }
+    
+//********************
+    
+    /// Initializes a document with the name of the pdf in the file system
+    fileprivate func document(_ name: String) -> PDFDocument? {
+        guard let documentURL = Bundle.main.url(forResource: name, withExtension: "pdf") else { return nil }
+        return PDFDocument(url: documentURL)
+    }
+    
+    fileprivate func showDocument(_ document: PDFDocument) {
+        let image = UIImage(named: "")
+        let controller = PDFViewController.createNew(with: document, title: "", actionButtonImage: image, actionStyle: .activitySheet)
+       present(controller, animated: true, completion: nil)
+       // navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    //MARK:- btnOpenPdfAct()
+    @IBAction func btnOpenPdfAct(_ sender: UIButton) {
+        let smallPDFDocumentName = "sample"
+        if let doc = document(smallPDFDocumentName) {
+            showDocument(doc)
+        } else {
+            print("Document named \(smallPDFDocumentName) not found in the file system")
+        }
+    }
+    
+ //**********************
+    //MARK:- btnAct()
     @IBAction func btnAct(_ sender: UIButton) {
         let cell = collectionView.visibleCells.first as? MyCollectionViewCell
         let indexPath = collectionView.indexPath(for: cell!)
-        guard let i = indexPath?.row else
-        {
+        guard let index = indexPath?.row else{return}
+        //print(index)
+        UIImageView.animate(withDuration: 1.0,
+        animations:({
+        //cell?.imgView.transform = (cell?.imgView.transform.rotated(by: CGFloat(Double.pi/2)))!
+        //let rotateImage = self.rotationObj.imageRotatedByDegrees(oldImage: self.imageArr[index], degrees: 90.0)
+        //self.imageArr[index] = rotateImage
+        let image = self.imageArr[index].fixedOrientation().imageRotatedByDegrees(degrees: 90.0)
+            self.imageArr[index] = image
+            self.collectionView.reloadData()
+        }))
+    }
+    
+ 
+    
+    
+    //MARK:- showAlert()
+     func showAlert()
+     {
+        Alert.showAlert(Title : Pdf.Title.rawValue ,Des : Pdf.success.rawValue,obj : self)
+     }
+    
+    
+    //MARK:- btnGenDrive()
+    @IBAction func btnGetDrive(_ sender: UIButton) {
+        let googleConfViewController = UIStoryboard(name: OtherUtility.Main.rawValue, bundle: nil).instantiateViewController(withIdentifier:"GoogleConfViewController") as! GoogleConfViewController
+        present(googleConfViewController, animated: true, completion: nil)
+  
+    }
+ 
+    //MARK:- btnUploadToDropBox()
+    @IBAction func btnUploadToDropBox(_ sender: UIButton) {
+        EZLoadingActivity.show("Please Wait..", disableUI: false)
+        uploadFileToDropBox()
+        
+    }
+    
+    //MARK:- btnDropbox()
+    @IBAction func btnDropbox(_ sender: UIButton) {
+    DropboxClientsManager.authorizeFromController(UIApplication.shared,
+                                                      controller: self,
+                                                      openURL: { (url: URL) -> Void in
+                                                        UIApplication.shared.openURL(url)
+    if let authResult = DropboxClientsManager.handleRedirectURL(url) {
+        switch authResult {
+            case .success:
+                print("Success! User is logged into Dropbox.")
+                self.btnUploadToDbox.isHidden = false
+            self.btnGetDropboxImages.isHidden = false
+            case .cancel:
+                  print("Authorization flow was manually canceled by user!")
+            case .error(_, let description):
+                  print("Error: \(description)")
+            }
+        }
+        })}
+
+    
+    //MARK:- uploadFileToDropBox()
+    func uploadFileToDropBox()
+    {
+       let client =  DropboxClientsManager.authorizedClient
+        let documentUrl:URL =  documentObj.getDocumentsDirectory()
+        let fileUrl = (documentUrl.appendingPathComponent("\(Pdf.folderName.rawValue)")).appendingPathComponent("\(Pdf.fileName.rawValue)")
+        guard let data = try? Data(contentsOf: fileUrl) else {
+            print("There was an error!")
             return
         }
-        let index = i
-        UIImageView.animate(withDuration: 1.0,
-                       animations:({
-                        cell?.imgView.transform = (cell?.imgView.transform.rotated(by: CGFloat(M_PI_2)))!
-                        let rotateImage = self.imageRotatedByDegrees(oldImage: self.imageArr[index], degrees: 90.0)
-                        self.imageArr[index] = rotateImage
-    }))
+        let fileData = data
+        client?.files.upload(path: "/CodeBrew/MyPDF.pdf", input: fileData).response { response, error in
+            if let metadata = response {
+                print("Uploaded file name: \(metadata.name)")
+                print("Uploaded file revision: \(metadata.rev)")
+                EZLoadingActivity.hide(true, animated: true)
+                }
+            if (error != nil)
+            {
+                EZLoadingActivity.hide(false, animated: true)
+            }
+        }
     }
     
-      
-    func imageRotatedByDegrees(oldImage: UIImage, degrees: CGFloat) -> UIImage {
-        //Calculate the size of the rotated view's containing box for our drawing space
-        let rotatedViewBox: UIView = UIView(frame: CGRect(x: 0, y: 0, width: oldImage.size.width, height: oldImage.size.height))
-        let t: CGAffineTransform = CGAffineTransform(rotationAngle: degrees * CGFloat.pi / 180)
-        rotatedViewBox.transform = t
-        let rotatedSize: CGSize = rotatedViewBox.frame.size
-        //Create the bitmap context
-        UIGraphicsBeginImageContext(rotatedSize)
-        let bitmap: CGContext = UIGraphicsGetCurrentContext()!
-        //Move the origin to the middle of the image so we will rotate and scale around the center.
-        bitmap.translateBy(x: rotatedSize.width / 2, y: rotatedSize.height / 2)
-        //Rotate the image context
-        bitmap.rotate(by: (degrees * CGFloat.pi / 180))
-        //Now, draw the rotated/scaled image into the context
-        bitmap.scaleBy(x: 1.0, y: -1.0)
-        bitmap.draw(oldImage.cgImage!, in: CGRect(x: -oldImage.size.width / 2, y: -oldImage.size.height / 2, width: oldImage.size.width, height: oldImage.size.height))
-        let newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-        UIGraphicsEndImageContext()
-        return newImage
+    //MARK:- btnActGetDBoxImages
+    @IBAction func btnActGetDBoxImages(_ sender: UIButton)
+    {
+       getImageFromDropbox()
     }
-    
-    @IBAction func btnOpenPdfAct(_ sender: UIButton) {
-        var file:URL =  self.getDocumentsDirectory()
-        file.appendPathComponent("sample1.pdf")
-        //let path = Bundle.main.path(forResource: "sample", ofType: "pdf")!
-        //let url = URL(fileURLWithPath: file)
-        print("file URL",file)
-        let pdfViewController = UIStoryboard(name: "Pdf", bundle: nil).instantiateInitialViewController() as! PdfViewController
-        pdfViewController.url = file
-        present(pdfViewController, animated: true, completion: nil)
-   
     }
-      func getDocumentsDirectory() -> URL {
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        let documentsDirectory = paths[0]
-        return documentsDirectory
-    }
-}
+
+
+//        let pdfReaderViewController = UIStoryboard(name: OtherUtility.Main.rawValue, bundle: nil).instantiateViewController(withIdentifier: VCIdentifier.PdfReaderViewController.rawValue) as! PdfReaderViewController
+//        pdfReaderViewController.finalImage = finalImage
+//        pdfReaderViewController.isInitiated = true
+//        present(pdfReaderViewController, animated: true, completion: nil)
+
+
+
+
+
 

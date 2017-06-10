@@ -22,16 +22,31 @@
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "PDFGenerator.PDFPageSize.A4.unsafeMutableAddressor : __C.CGSize"
+                  symbolName = "globalinit_33_93334E929BA6A64ACE4DF7EA25E87151_func0"
                   moduleName = "PDFGenerator"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sierra4/Desktop/projects/PlayWithImage/Pods/PDFGenerator/PDFGenerator/PDFPage.swift"
-                  timestampString = "517412491.932972"
+                  urlString = "file:///Users/sierra4/Desktop/projects/PlayWithImage%202%202/Pods/PDFGenerator/PDFGenerator/PDFPage.swift"
+                  timestampString = "518794571.014739"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "76"
                   endingLineNumber = "76"
-                  offsetFromSymbolStart = "4">
+                  offsetFromSymbolStart = "24">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PDFGenerator.PDFPageSize.A4.unsafeMutableAddressor : __C.CGSize"
+                  moduleName = "PDFGenerator"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sierra4/Desktop/projects/PlayWithImage%202%202/Pods/PDFGenerator/PDFGenerator/PDFPage.swift"
+                  timestampString = "518794571.018039"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "76"
+                  endingLineNumber = "76"
+                  offsetFromSymbolStart = "20">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -40,13 +55,13 @@
                   symbolName = "static PDFGenerator.PDFPageSize.A4.getter : __C.CGSize"
                   moduleName = "PDFGenerator"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sierra4/Desktop/projects/PlayWithImage/Pods/PDFGenerator/PDFGenerator/PDFPage.swift"
-                  timestampString = "517412491.935094"
+                  urlString = "file:///Users/sierra4/Desktop/projects/PlayWithImage%202%202/Pods/PDFGenerator/PDFGenerator/PDFPage.swift"
+                  timestampString = "518794571.02085"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "76"
                   endingLineNumber = "76"
-                  offsetFromSymbolStart = "18">
+                  offsetFromSymbolStart = "20">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -73,8 +88,23 @@
                   symbolName = "globalinit_33_93334E929BA6A64ACE4DF7EA25E87151_func1"
                   moduleName = "PDFGenerator"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sierra4/Desktop/projects/PlayWithImage/Pods/PDFGenerator/PDFGenerator/PDFPage.swift"
-                  timestampString = "517412491.939998"
+                  urlString = "file:///Users/sierra4/Desktop/projects/PlayWithImage%202%202/Pods/PDFGenerator/PDFGenerator/PDFPage.swift"
+                  timestampString = "518794571.024745"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "78"
+                  endingLineNumber = "78"
+                  offsetFromSymbolStart = "24">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PDFGenerator.PDFPageSize.B5.unsafeMutableAddressor : __C.CGSize"
+                  moduleName = "PDFGenerator"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sierra4/Desktop/projects/PlayWithImage%202%202/Pods/PDFGenerator/PDFGenerator/PDFPage.swift"
+                  timestampString = "518794571.027408"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "78"
@@ -88,13 +118,13 @@
                   symbolName = "static PDFGenerator.PDFPageSize.B5.getter : __C.CGSize"
                   moduleName = "PDFGenerator"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sierra4/Desktop/projects/PlayWithImage/Pods/PDFGenerator/PDFGenerator/PDFPage.swift"
-                  timestampString = "517412491.944384"
+                  urlString = "file:///Users/sierra4/Desktop/projects/PlayWithImage%202%202/Pods/PDFGenerator/PDFGenerator/PDFPage.swift"
+                  timestampString = "518794571.030345"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "78"
                   endingLineNumber = "78"
-                  offsetFromSymbolStart = "18">
+                  offsetFromSymbolStart = "20">
                </Location>
             </Locations>
          </BreakpointContent>

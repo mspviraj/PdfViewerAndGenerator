@@ -7,16 +7,37 @@
 //
 
 import UIKit
+import Google
+import GoogleSignIn
+import SwiftyDropbox
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var orientationLock = UIInterfaceOrientationMask.all
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return self.orientationLock
+    }
 
-
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+    func applicationDidFinishLaunching(_ application: UIApplication) {
+    
+        // Initialize sign-in
+        var configureError: NSError?
+        GGLContext.sharedInstance().configureWithError(&configureError)
+        assert(configureError == nil, "Error configuring Google services: \(configureError)")
+        DropboxClientsManager.setupWithAppKey("g3xkbyz8552jc5b")
+       // DropboxClientsManager.setupWithAppKeyDesktop("g3xkbyz8552jc5b")
+    }
+    
+       func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        DropboxClientsManager.setupWithAppKey("g3xkbyz8552jc5b")
+        var configureError: NSError?
+        GGLContext.sharedInstance().configureWithError(&configureError)
+        assert(configureError == nil, "Error configuring Google services: \(configureError)")
+        GIDSignIn.sharedInstance().clientID = "485146524665-nrvgj5kuna86qkr5iotcv5p61glpu4sv.apps.googleusercontent.com"
         return true
+        
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -41,6 +62,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-
+    func application(_ application: UIApplication,
+                     open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+        return GIDSignIn.sharedInstance().handle(url,
+                                                 sourceApplication: sourceApplication,
+                                                 annotation: annotation)
+    }
+    
+    
+    
+    @available(iOS 9.0, *)
+    func application(_ app: UIApplication, open url: URL,
+                     options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
+        
+//
+//        if let authResult = DropboxClientsManager.handleRedirectURL(url) {
+//            switch authResult {
+//            case .success:
+//                print("Success! User is logged into Dropbox.")
+//            case .cancel:
+//                print("Authorization flow was manually canceled by user!")
+//            case .error(_, let description):
+//                print("Error: \(description)")
+//            }
+//
+            
+        let sourceApplication = options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String
+        let annotation = options[UIApplicationOpenURLOptionsKey.annotation]
+        return GIDSignIn.sharedInstance().handle(url,sourceApplication: sourceApplication,
+                                                 annotation: annotation)
+    
+        return true
+    }
 }
 

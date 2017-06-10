@@ -42,9 +42,7 @@ open class PDFThumbnailViewController: UIViewController {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: flowLayout)
         collectionView.delegate = self
         collectionView.dataSource = self
-        
         self.collectionView.register(PDFThumbnailViewCell.self, forCellWithReuseIdentifier: "ThumbnailCell")
-
         self.setupUI()
     }
     
@@ -57,7 +55,6 @@ open class PDFThumbnailViewController: UIViewController {
                                                                 target: self,
                                                                 action: #selector(PDFThumbnailViewController.tappedDone))
         view.addSubview(collectionView)
-        
         collectionView.backgroundColor = UIColor.white
         collectionView.alwaysBounceVertical = true
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -87,7 +84,7 @@ extension PDFThumbnailViewController: UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: "ThumbnailCell", for: indexPath) as! PDFThumbnailViewCell
-
+        
         let page = indexPath.row + 1
         cell.configure(document: document, page: page)
         

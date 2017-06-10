@@ -300,45 +300,6 @@ extension PDFViewController: PDFPageScrubberDelegate {
     }
 }
 
-//extension PDFViewController: PDFSinglePageViewerDelegate {
-//    public func singlePageViewer(_ collectionView: PDFSinglePageViewer, didDisplayPage page: Int) {
-//        document.currentPage = page
-//        if showsScrubber {
-//            pageScrubber.updateScrubber()
-//        }
-//    }
-//    
-//    public func singlePageViewer(_ collectionView: PDFSinglePageViewer, loadedContent content: PDFPageContentView) {
-//        if allowsFormFilling {
-//            formController.showForm(content)
-//        }
-//        if allowsAnnotations {
-//            annotationController.showAnnotations(content)
-//        }
-//    }
-//    
-//    public func singlePageViewer(_ collectionView: PDFSinglePageViewer, selectedAction action: PDFAction) {
-//        if let action = action as? PDFActionURL {
-//            let svc = SFSafariViewController(url: action.url as URL)
-//            present(svc, animated: true, completion: nil)
-//        } else if let action = action as? PDFActionGoTo {
-//           // collectionView.displayPage(action.pageIndex, animated: true)
-//        }
-//    }
-//    
-//    public func singlePageViewer(_ collectionView: PDFSinglePageViewer, tapped recognizer: UITapGestureRecognizer) {
-//        if hidesBarsOnTap {
-//            handleTap(recognizer)
-//        }
-//    }
-//    
-//    public func singlePageViewerDidBeginDragging() {
-//        self.hideBars(state: true)
-//    }
-//    
-//    public func singlePageViewerDidEndDragging() { }
-//}
-//
 extension PDFViewController: PDFThumbnailViewControllerDelegate {
     public func thumbnailCollection(_ collection: PDFThumbnailViewController, didSelect page: Int) {
         self.scrollTo(page: page)

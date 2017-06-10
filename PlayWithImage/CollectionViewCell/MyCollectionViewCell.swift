@@ -7,8 +7,9 @@
 //
 
 import UIKit
-import PDFGenerator
 import AVFoundation
+import PDFGenerator
+import Foundation
 
 class MyCollectionViewCell: UICollectionViewCell {
     
@@ -18,7 +19,8 @@ class MyCollectionViewCell: UICollectionViewCell {
     var transfromArr = [UIImage]()
     var documentObj = Document()
     var mainVCobj = ViewController()
-    
+    var thumbImage  = UIImage()
+   // var finalImage = UIImage()
     
     //MARK:- Outlets
     @IBOutlet weak var imgView: UIImageView!
@@ -40,24 +42,34 @@ class MyCollectionViewCell: UICollectionViewCell {
         while index < self.imagesArr.count
         {
             
-         let page = PDFPage.image(self.createViewWithImageandLabel(index:index))
+        let page = PDFPage.image(self.createViewWithImageandLabel(index:index))
         pagesArr.append(page)
           
              index = index + 1
         }
-        let documentDirectory = documentObj.getDocumentsDirectory()
-        var newDir = documentDirectory.appendingPathComponent(Pdf.folderName.rawValue).path
-        newDir.append("/\(Pdf.fileName.rawValue)")
+        let documentsDirectory = documentObj.getDocumentsDirectory()
+        var dataPath = documentsDirectory.appendingPathComponent("\(Pdf.folderName.rawValue)")
         
         do {
-            try PDFGenerator.generate(pagesArr, to: newDir)
-            print(Pdf.location.rawValue ,newDir)
+            try FileManager.default.createDirectory(atPath: dataPath.path, withIntermediateDirectories: true, attributes: nil)
+        } catch let error as NSError {
+            print("Error creating directory: \(error.localizedDescription)")
+        }
+        dataPath.appendPathComponent("\(Pdf.fileName.rawValue)")
+        
+        do {
+            try PDFGenerator.generate(pagesArr, to: dataPath)
+            print(Pdf.location.rawValue ,dataPath)
             mainVCobj.showAlert()
             
         } catch (let e) {
             print(e.localizedDescription)
        }
+        let image = self.getThumbnailForPDF(String(describing:dataPath), pageNumber: 1)
+        thumbImage = image!
+        print("Thumbnail Image",image ?? "nil")
     }
+    
     
    //MARK:- setImagesInPdfAccordingToTheSize
     func createViewWithImageandLabel(index : Int) ->UIImage
@@ -86,7 +98,7 @@ class MyCollectionViewCell: UICollectionViewCell {
         secondChildImageView.image = self.imagesArr[index]
         
         
-        
+       
         //UILabel
         let label = UILabel(frame: CGRect(x: 0.0, y: imageView.frame.size.height, width: visibleRect.size.width, height: 40))
         //let label = UILabel(frame: CGRect(x: 0.0, y: UIScreen.main.bounds.size.height - 40.0,width:UIScreen.main.bounds.size.width, height: 40))
@@ -102,6 +114,7 @@ class MyCollectionViewCell: UICollectionViewCell {
         
         //convert into image
         let convertedImage = convertViewIntoImage(view:mainView)
+        mainVCobj.finalImage.append(convertedImage)
         return convertedImage
     }
     
@@ -115,4 +128,36 @@ class MyCollectionViewCell: UICollectionViewCell {
        UIGraphicsEndImageContext()
        return image!
     }
+    
+    //MARK:- generateThumbnail
+     func getThumbnailForPDF(_ urlString:String, pageNumber:Int) -> UIImage? {
+        let url = NSURL(string: urlString)
+        guard let getUrl = url else {return nil}
+        let fileUrl = getUrl
+        let pdf = CGPDFDocument(fileUrl as CFURL)
+        let page = pdf?.page(at: pageNumber)!
+        
+        let rect = CGRect(x: 0, y: 0, width: 300.0, height: 300.0) //Image size here
+        
+        UIGraphicsBeginImageContext(rect.size)
+        let context = UIGraphicsGetCurrentContext()!
+        
+        context.saveGState()
+        context.translateBy(x: 0, y: rect.height)
+        context.scaleBy(x: 1.0, y: -1.0)
+        context.setFillColor(gray: 1.0, alpha: 0.0)
+        context.fill(rect)
+        
+        
+        let pdfTransform = page?.getDrawingTransform(CGPDFBox.mediaBox, rect: rect, rotate: 0, preserveAspectRatio: false)
+        context.concatenate(pdfTransform!)
+        context.drawPDFPage(page!)
+        
+        
+        let thumbImage = UIGraphicsGetImageFromCurrentImageContext()
+        context.restoreGState()
+        
+        UIGraphicsEndImageContext()
+        return thumbImage
+}
 }

@@ -22,8 +22,22 @@ class SecondViewController: UIViewController {
         imgView.image = image
     }
 
-    //MARK:-  btnBack
+   //MARK:-  btnBack
     @IBAction func btnBack(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }
+   
+    //MARK:- viewDidAppear
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AppUtility.lockOrientation(.portrait)
+
+    }
+    
+    //MARK:- viewWillDisappear()
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        AppUtility.lockOrientation(.all)
+    }
+
 }
