@@ -25,19 +25,19 @@ internal final class TiledView: UIView {
     
     /// Current PDF scale
     private let myScale: CGFloat
-   
+    
     /// Initializes a fresh tiled view
     ///
     /// - parameter frame:   desired frame of the tiled view
     /// - parameter scale:   scale factor
     /// - parameter newPage: new page representation
+    
     init(frame: CGRect, scale: CGFloat, newPage: CGPDFPage) {
         myScale = scale
-        leftPdfPage = newPage
         super.init(frame: frame)
-        
+        leftPdfPage = newPage
         // levelsOfDetail and levelsOfDetailBias determine how the layer is
-        // rendered at different zoom levels. This only matters while the view 
+        // rendered at different zoom levels. This only matters while the view
         // is zooming, because once the the view is done zooming a new TiledPDFView
         // is created at the correct size and scale.
         let tiledLayer = self.layer as? CATiledLayer
@@ -45,7 +45,7 @@ internal final class TiledView: UIView {
         tiledLayer?.levelsOfDetailBias = 15
         tiledLayer?.tileSize = CGSize(width: 1024, height: 1024)
     }
-
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -60,7 +60,7 @@ internal final class TiledView: UIView {
         // Fill the background with white.
         con.setFillColor(red: 1, green: 1, blue: 1, alpha: 1)
         con.fill(bounds)
-    
+        
         con.saveGState()
         // Flip the context so that the PDF page is rendered right side up.
         

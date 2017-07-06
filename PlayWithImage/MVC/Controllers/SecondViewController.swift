@@ -21,7 +21,7 @@ class SecondViewController: UIViewController {
         super.viewDidLoad()
         imgView.image = image
     }
-
+   
    //MARK:-  btnBack
     @IBAction func btnBack(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)

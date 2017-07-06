@@ -10,6 +10,6 @@ import UIKit
 
 class DriveImageCollectionViewCell: UICollectionViewCell {
     
-    //MARK:- Outlets
+    //MARK: - Outlets
     @IBOutlet weak var ImgDrive: UIImageView!
 }

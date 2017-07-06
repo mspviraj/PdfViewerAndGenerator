@@ -31,22 +31,22 @@ internal final class PDFPageCollectionViewCell: UICollectionViewCell {
     /// Delegate informed of important events
     fileprivate weak var pageCollectionViewCellDelegate: PDFPageCollectionViewCellDelegate?
     
-    
     /// Customizes and sets up the cell to be ready to be displayed
     ///
     /// - parameter indexPathRow:                   page index of the document to be displayed
     /// - parameter collectionViewBounds:           bounds of the entire collection view
     /// - parameter document:                       document to be displayed
     /// - parameter pageCollectionViewCellDelegate: delegate informed of important events
-    func setup(_ indexPathRow: Int, collectionViewBounds: CGRect, document: PDFDocument, pageCollectionViewCellDelegate: PDFPageCollectionViewCellDelegate?) {
+    func setup(_ indexPathRow: Int, collectionViewBounds: CGRect, document: PDFDocument, pageCollectionViewCellDelegate: PDFPageCollectionViewCellDelegate?,isHorizontal:Bool?,pdfImage:UIImage?) {
         self.pageCollectionViewCellDelegate = pageCollectionViewCellDelegate
         document.pdfPageImage(at: indexPathRow + 1) { (backgroundImage) in
-            pageView = PDFPageView(frame: bounds, document: document, pageNumber: indexPathRow, backgroundImage: backgroundImage, pageViewDelegate: self)
+            pageView = PDFPageView(frame: bounds, document: document, pageNumber: indexPathRow, backgroundImage: backgroundImage, pageViewDelegate: self,isHorizontal:isHorizontal,pdfImage:pdfImage)
             pageIndex = indexPathRow
         }
     }
 }
 
+//MARK:- PDFCollectionViewCell - (PDFPageViewDelegate) -
 extension PDFPageCollectionViewCell: PDFPageViewDelegate {
     func handleSingleTap(_ pdfPageView: PDFPageView) {
         pageCollectionViewCellDelegate?.handleSingleTap(self, pdfPageView: pdfPageView)

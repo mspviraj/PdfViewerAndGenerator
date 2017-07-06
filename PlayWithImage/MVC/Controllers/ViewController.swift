@@ -18,14 +18,11 @@ class ViewController: UIViewController {
     var documentObj = Document()
     let fileManager = FileManager.default
     let arrDropboxImages = NSMutableArray()
-    var finalImage = [UIImage]()
-    
     
     //MARK:- Outlets
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var btnUploadToDbox: UIButton!
     @IBOutlet weak var btnGetDropboxImages: UIButton!
-    
     
     //MARK:- viewDidLoad()
     override func viewDidLoad() {
@@ -35,21 +32,17 @@ class ViewController: UIViewController {
         btnGetDropboxImages.isHidden = true
     }
     
-    
     //MARk:- viewDidAppear()
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         AppUtility.lockOrientation(.portrait)
     }
     
-    
     //MARK:- viewWillDisappear()
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         AppUtility.lockOrientation(.all)
     }
-    
-//********************
     
     /// Initializes a document with the name of the pdf in the file system
     fileprivate func document(_ name: String) -> PDFDocument? {
@@ -58,23 +51,26 @@ class ViewController: UIViewController {
     }
     
     fileprivate func showDocument(_ document: PDFDocument) {
+        
         let image = UIImage(named: "")
         let controller = PDFViewController.createNew(with: document, title: "", actionButtonImage: image, actionStyle: .activitySheet)
-       present(controller, animated: true, completion: nil)
-       // navigationController?.pushViewController(controller, animated: true)
+        present(controller, animated: true, completion: nil)
+        
     }
     
     //MARK:- btnOpenPdfAct()
     @IBAction func btnOpenPdfAct(_ sender: UIButton) {
-        let smallPDFDocumentName = "sample"
-        if let doc = document(smallPDFDocumentName) {
-            showDocument(doc)
+        let documentUrl:URL =  documentObj.getDocumentsDirectory()
+        let fileUrl = (documentUrl.appendingPathComponent("\(Pdf.folderName.rawValue)")).appendingPathComponent("\(Pdf.fileName.rawValue)")
+        let document = try! PDFDocument(url: fileUrl, password: OtherUtility.blank.rawValue)
+        if let pdf = document
+        {
+            showDocument(pdf)
         } else {
-            print("Document named \(smallPDFDocumentName) not found in the file system")
+            print("Document not found in the file system")
         }
     }
     
- //**********************
     //MARK:- btnAct()
     @IBAction func btnAct(_ sender: UIButton) {
         let cell = collectionView.visibleCells.first as? MyCollectionViewCell
@@ -83,24 +79,17 @@ class ViewController: UIViewController {
         //print(index)
         UIImageView.animate(withDuration: 1.0,
         animations:({
-        //cell?.imgView.transform = (cell?.imgView.transform.rotated(by: CGFloat(Double.pi/2)))!
-        //let rotateImage = self.rotationObj.imageRotatedByDegrees(oldImage: self.imageArr[index], degrees: 90.0)
-        //self.imageArr[index] = rotateImage
         let image = self.imageArr[index].fixedOrientation().imageRotatedByDegrees(degrees: 90.0)
             self.imageArr[index] = image
             self.collectionView.reloadData()
         }))
     }
     
- 
-    
-    
     //MARK:- showAlert()
      func showAlert()
      {
         Alert.showAlert(Title : Pdf.Title.rawValue ,Des : Pdf.success.rawValue,obj : self)
      }
-    
     
     //MARK:- btnGenDrive()
     @IBAction func btnGetDrive(_ sender: UIButton) {
@@ -137,7 +126,7 @@ class ViewController: UIViewController {
         })}
 
     
-    //MARK:- uploadFileToDropBox()
+    //MARK: - uploadFileToDropBox()
     func uploadFileToDropBox()
     {
        let client =  DropboxClientsManager.authorizedClient
@@ -161,18 +150,12 @@ class ViewController: UIViewController {
         }
     }
     
-    //MARK:- btnActGetDBoxImages
+    //MARK: - btnActGetDBoxImages
     @IBAction func btnActGetDBoxImages(_ sender: UIButton)
     {
        getImageFromDropbox()
     }
     }
-
-
-//        let pdfReaderViewController = UIStoryboard(name: OtherUtility.Main.rawValue, bundle: nil).instantiateViewController(withIdentifier: VCIdentifier.PdfReaderViewController.rawValue) as! PdfReaderViewController
-//        pdfReaderViewController.finalImage = finalImage
-//        pdfReaderViewController.isInitiated = true
-//        present(pdfReaderViewController, animated: true, completion: nil)
 
 
 

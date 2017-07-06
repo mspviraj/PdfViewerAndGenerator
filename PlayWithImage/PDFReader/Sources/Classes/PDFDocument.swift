@@ -192,7 +192,7 @@ public struct PDFDocument {
         }
         
         context.scaleBy(x: 1, y: -1)
-        context.rotate(by: rotationAngle.degreesToRadians)
+        // context.rotate(by: rotationAngle.degreesToRadians)
         
         // Scale the context so that the PDF page is rendered at the correct size for the zoom level.
         context.scaleBy(x: pdfScale, y: pdfScale)
@@ -209,6 +209,7 @@ public struct PDFDocument {
     }
 }
 
+//MARK: - extension PDFPage
 extension CGPDFPage {
     /// original size of the PDF page.
     var originalPageRect: CGRect {

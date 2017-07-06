@@ -13,39 +13,36 @@ import Foundation
 
 class MyCollectionViewCell: UICollectionViewCell {
     
-    //MARK:- Variables
+    //MARK: - Variables
     let resourcesObj = Resources()
     var imagesArr = [UIImage]()
     var transfromArr = [UIImage]()
     var documentObj = Document()
     var mainVCobj = ViewController()
     var thumbImage  = UIImage()
-   // var finalImage = UIImage()
+    // var finalImage = UIImage()
     
-    //MARK:- Outlets
+    //MARK: - Outlets 
     @IBOutlet weak var imgView: UIImageView!
     
     
-    //MARK:- btnSaveToPdfAct()
+    //MARK: - Save Pdf Action
     @IBAction func btnSaveToPdfAct(_ sender: UIButton) {
-       
-     imagesArr = resourcesObj.getResources()
-      generatePdf()
+        imagesArr = resourcesObj.getResources()
+        generatePdf()
     }
     
-    
-    //MARK:- generatePdf()
+    //MARK: - Generate Pdf
     func generatePdf()
     {
         var pagesArr = [PDFPage]()
         var index = 0
         while index < self.imagesArr.count
         {
+            let page = PDFPage.image(self.createViewWithImageandLabel(index:index))
+            pagesArr.append(page)
             
-        let page = PDFPage.image(self.createViewWithImageandLabel(index:index))
-        pagesArr.append(page)
-          
-             index = index + 1
+            index = index + 1
         }
         let documentsDirectory = documentObj.getDocumentsDirectory()
         var dataPath = documentsDirectory.appendingPathComponent("\(Pdf.folderName.rawValue)")
@@ -64,44 +61,42 @@ class MyCollectionViewCell: UICollectionViewCell {
             
         } catch (let e) {
             print(e.localizedDescription)
-       }
+        }
         let image = self.getThumbnailForPDF(String(describing:dataPath), pageNumber: 1)
         thumbImage = image!
         print("Thumbnail Image",image ?? "nil")
     }
     
     
-   //MARK:- setImagesInPdfAccordingToTheSize
-    func createViewWithImageandLabel(index : Int) ->UIImage
+    //MARK: - setImagesInPdfAccordingToTheSize
+    func createViewWithImageandLabel(index : Int) -> UIImage
     {
-        let visibleRect = AVMakeRect(aspectRatio: CGSize(width: imagesArr[index].size.width, height: imagesArr[index].size.height), insideRect: UIScreen.main.bounds)
+        //****** Choose Your PDF Page Size *******//
+        let width:CGFloat = 794
+        let height:CGFloat = 1123
+        
+        //visibleRect
+        let visibleRect = AVMakeRect(aspectRatio: CGSize(width: imagesArr[index].size.width, height: imagesArr[index].size.height), insideRect: CGRect(x: 0.0, y: 0.0, width: width, height: height))
         
         //UIView
         let mainView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: visibleRect.size.width, height: visibleRect.size.height + 40.0 ))
-        //let mainView = UIView(frame:UIScreen.main.bounds)
         mainView.backgroundColor = .red
         
-
         //UIImageView
         let imageView = UIImageView(frame: CGRect(x: 0.0, y: 0.0, width: visibleRect.size.width, height: visibleRect.size.height))
         imageView.contentMode = .scaleAspectFit
         imageView.image = self.imagesArr[index]
         
-        
         //First UIImageView
         let firstChildImageView = UIImageView(frame:CGRect(x: 0.0, y: imageView.frame.size.height - 80.0, width: 80.0, height: 80.0))
         firstChildImageView.image = self.imagesArr[index]
-        
         
         //Second UIImageView
         let secondChildImageView = UIImageView(frame:CGRect(x: firstChildImageView.frame.size.width , y: imageView.frame.size.height - 80.0, width: 80.0, height: 80.0))
         secondChildImageView.image = self.imagesArr[index]
         
-        
-       
         //UILabel
         let label = UILabel(frame: CGRect(x: 0.0, y: imageView.frame.size.height, width: visibleRect.size.width, height: 40))
-        //let label = UILabel(frame: CGRect(x: 0.0, y: UIScreen.main.bounds.size.height - 40.0,width:UIScreen.main.bounds.size.width, height: 40))
         
         label.textAlignment = .center
         label.text = String("img \(index) .png")
@@ -114,23 +109,22 @@ class MyCollectionViewCell: UICollectionViewCell {
         
         //convert into image
         let convertedImage = convertViewIntoImage(view:mainView)
-        mainVCobj.finalImage.append(convertedImage)
         return convertedImage
     }
     
     
-    //MARK:- convertViewIntoImage
+    //MARK: - convertViewIntoImage
     func convertViewIntoImage(view:UIView) -> UIImage
     {
-       UIGraphicsBeginImageContextWithOptions(view.frame.size, true, 2.0)
-       view.layer.render(in: UIGraphicsGetCurrentContext()!)
-       let image = UIGraphicsGetImageFromCurrentImageContext()
-       UIGraphicsEndImageContext()
-       return image!
+        UIGraphicsBeginImageContextWithOptions(view.frame.size, true, 2.0)
+        view.layer.render(in: UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image!
     }
     
-    //MARK:- generateThumbnail
-     func getThumbnailForPDF(_ urlString:String, pageNumber:Int) -> UIImage? {
+    //MARK: - generateThumbnail
+    func getThumbnailForPDF(_ urlString:String, pageNumber:Int) -> UIImage? {
         let url = NSURL(string: urlString)
         guard let getUrl = url else {return nil}
         let fileUrl = getUrl
@@ -147,17 +141,14 @@ class MyCollectionViewCell: UICollectionViewCell {
         context.scaleBy(x: 1.0, y: -1.0)
         context.setFillColor(gray: 1.0, alpha: 0.0)
         context.fill(rect)
-        
-        
         let pdfTransform = page?.getDrawingTransform(CGPDFBox.mediaBox, rect: rect, rotate: 0, preserveAspectRatio: false)
         context.concatenate(pdfTransform!)
         context.drawPDFPage(page!)
-        
-        
         let thumbImage = UIGraphicsGetImageFromCurrentImageContext()
         context.restoreGState()
-        
         UIGraphicsEndImageContext()
         return thumbImage
-}
+    }
+    
+    
 }

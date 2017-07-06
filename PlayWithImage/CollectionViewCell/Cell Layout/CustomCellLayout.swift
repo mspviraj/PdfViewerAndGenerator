@@ -12,6 +12,7 @@ import UIKit
 class CustomCellLayout
 {
 
+    //MARK: - changeCustom
     static func changeCustom(value:Int,cell:UICollectionViewCell) -> UICollectionViewCell
     {
         cell.layer.cornerRadius = 2
